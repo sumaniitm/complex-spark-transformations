@@ -41,8 +41,21 @@
 
 `unique_count_of_secondary_response_variables.show()`
 
-#### Check the NaNs and Nulls in the response variables
+#### Check the NaNs and Nulls in the explanatory variables. These variables typically go in the x-axis. Statistically, we are interested in the extent to which the variation in the response variables are associated with the variation in these variables
 
 `nan_null_count_in_primary_explanatory_variables = df_with_no_spaces_in_colm_names.select([func.count(func.when(func.isnan(col) | func.col(col).isNull(), col)).alias('null_nan_count_'+ col) for col in primary_explanatory_variables])`
 
 `nan_null_count_in_primary_explanatory_variables.show()`
+
+#### Creating a new categorical explanatory variable (Categorical variables are factors with 2 or more levels, e.g. a rainbow is a factor with 7 levels)
+
+`df_with_no_spaces_in_colm_names = df_with_no_spaces_in_colm_names.withColumn('Violation_AM_or_PM', func.when(func.isnan(df_with_no_spaces_in_colm_names.Violation_Time) | func.col('Violation_Time').isNull(), func.lit(None)).otherwise(func.substring(df_with_no_spaces_in_colm_names.Violation_Time,5,1)))`
+
+#### Verify that the new column has been populated correctly
+
+`df_with_no_spaces_in_colm_names.select('Violation_Time','Violation_AM_or_PM').filter(df_with_no_spaces_in_colm_names.Violation_Time.isNotNull()).show(10)`
+
+`df_with_no_spaces_in_colm_names.select('Violation_Time','Violation_AM_or_PM').filter(df_with_no_spaces_in_colm_names.Violation_Time.isNull()).show(10)`
+
+`df_with_no_spaces_in_colm_names.select('Violation_Time','Violation_AM_or_PM').filter(func.isnan(df_with_no_spaces_in_colm_names.Violation_Time)).show(10)`
+
