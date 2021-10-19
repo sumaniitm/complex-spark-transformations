@@ -4,6 +4,10 @@ def data_path():
     return '/Users/sumangangopadhyay/Downloads/nyc_taxi_data/Parking_Violations_Issued_-_Fiscal_Year_2017.csv'
 
 
+def clean_data_path():
+    return '/Users/sumangangopadhyay/complex-spark-transformations/data/2017_nyc_trimmed.csv'
+
+
 def primary_response_variables():
     return 'Registration_State,Plate_Type,Violation_Code,Law_Section,Violation_Legal_Code,Issuing_Agency'
 
